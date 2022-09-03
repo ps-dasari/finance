@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sign up</title>
+</head>
+<body>
+    <div class="form_post">
+        {% block form_post %}
+        <form action="post">
+            {% csrf_token %}
+            {{ form_}}
+            <input type="submit" value="submit" class="btn btn-primary></input>
+            </form>
+            <br>
+        {% endblock %}
+        </div>
+        <h1>Sign up</h1>
+        {% if company %}
+        <div class="container">
+            <table border="2">
+                <thead>
+                    <th>id</th>
+                    <th>user name</th>
+                    <th>company logo</th>
+                    <th>email</th>
+                    <th>password</th>
+                    <th>re_enter_password</th>
+                    <th>mobile_number</th>
+                    <th>company_name</th>
+                    <th>company_address</th>
+                    <th>interest_rate_followed</th>
+                </thead>
+                {%for me in company%}
+                <tr>
+                    <td>{{me.id}}</td>
+                    <td>{{me.name}}</td>
+                    <td>{{me.logo}}</td>
+                    <td>{{me.email}}</td>
+                    <td>{{me.password}}</td>
+                    <td>{{me.re_enter_password}</td>
+                    <td>{{me.mobile_number}}</td>
+                    <td>{{me.company_name}}</td>
+                    <td>{{me.company_address}}</td>
+                    <td>{{me.interest_rate_followed}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <p>still ,table got not uptated</p>
+        </div>
+    </div>
+    {% endif %}
+</body>
+</html>
+

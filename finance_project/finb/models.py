@@ -1,42 +1,53 @@
 from ast import Not
 from calendar import c
+from decimal import DefaultContext
 import email
 from enum import unique
+from math import fabs
+#from wsgiref.validate import validator
+from django.core import validators
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
+from django.core.validators import RegexValidator
+
 
 # Create your models here.
 class company_models(models.Model):
-    id = models.IntegerField(primary_key=True)
+    #id = models.IntegerField(primary_key=True,serialize=False,auto_created=True)
     name = models.CharField(max_length=200)
-    logo = models.ImageField(max_length=100)
-    email=models.EmailField(max_length=200 )
+    logo = models.ImageField(max_length=100,null=True,blank=True)
+    email=models.EmailField(max_length=200,null=True,blank=True)
     password = models.CharField(max_length=100)
     re_enter_password = models.CharField(max_length=100)
-    mobile_number = PhoneNumberField()
-    company_name = models.CharField(max_length=200)
-    company_address = models.TextField()
-    interest_rate_followed=models.IntegerField()
+    mobile_number = PhoneNumberField(null=True)
+    company_name = models.CharField(max_length=200,null=True,blank=True)
+    company_address = models.TextField(null=True, blank=True)
+    interest_rate_followed=models.IntegerField(null=True, blank=True)
     def __str__(self):
         return self.name
+  
+     
 
 class customer_models(models.Model):
-    id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=200)
-    mobile_number = PhoneNumberField()
+    #id = models.IntegerField(primary_key=True)
+    name = models.ForeignKey('finb.accounts_models', on_delete=models.CASCADE,related_name='+')
+    mobile_number = models.ForeignKey('finb.accounts_models', on_delete=models.CASCADE)
     date= models.DateField(auto_now_add=True)
-    photo = models.ImageField(max_length=100)
+    photo = models.ImageField(max_length=100,null=True,blank=True)
     area_code = models.ForeignKey('finb.areas_models',on_delete=models.CASCADE)
     customer_address = models.TextField()  
+    def __str__(self):
+        return str('%s object' % self.__class__.__name__)
 
 class areas_models(models.Model):
-    id = models.IntegerField(primary_key=True)
-    area_code = models.CharField(max_length=50,unique=True)  
+    #id = models.IntegerField(primary_key=True)
+    area_code = models.CharField(max_length=10,unique=True)  
     area_name = models.CharField(max_length=200 )
 
 class accounts_models(models.Model):
-    id = models.IntegerField(primary_key=True)
-    name = models.ForeignKey('finb.customer_models', on_delete=models.CASCADE)
+   # id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=200) #ForeignKey('finb.customer_models', on_delete=models.CASCADE)
+    mobile_number = PhoneNumberField(null=True, validators=[RegexValidator(r'[9876][0-9]{9}$')])
     lone_amount = models.FloatField()
     area_code = models.ForeignKey('finb.areas_models',on_delete=models.CASCADE)
     lone_issue_date = models.DateTimeField(auto_now_add=True)
@@ -46,4 +57,3 @@ class accounts_models(models.Model):
     debt_amount = models.FloatField()
     interest= models.IntegerField( default=0)
     is_debt_closed = models.BooleanField(default=False)
-

@@ -15,7 +15,9 @@ class areas_admin(admin.ModelAdmin):
 admin.site.register(areas_models,areas_admin)
 
 class accounts_admin(admin.ModelAdmin):
-    list_display = ['lone_amount','lone_issue_date','daily_debt','number_of_days','paid_amount','debt_amount','interest','is_debt_closed']
+    list_display = [ 'name','mobile_number','lone_amount','area_code','lone_issue_date','daily_debt','number_of_days','paid_amount','debt_amount','interest','is_debt_closed']
+    def area_code(self,instance):
+        return instance.areas_admin.area_code   
 admin.site.register(accounts_models,accounts_admin)
 
 

@@ -9,10 +9,10 @@
 <body>
     <div class="form_post">
         {% block form_post %}
-        <form action="post">
+        <form action="post" >
             {% csrf_token %}
-            {{ form_}}
-            <input type="submit" value="submit" class="btn btn-primary></input>
+            {{ form.as_p }}
+            <input type="submit" value="submit" class="btn btn-primary>
             </form>
             <br>
         {% endblock %}
@@ -40,7 +40,7 @@
                     <td>{{me.logo}}</td>
                     <td>{{me.email}}</td>
                     <td>{{me.password}}</td>
-                    <td>{{me.re_enter_password}</td>
+                    <td>{{me.re_enter_password}}</td>
                     <td>{{me.mobile_number}}</td>
                     <td>{{me.company_name}}</td>
                     <td>{{me.company_address}}</td>
@@ -53,6 +53,7 @@
         </div>
     </div>
     {% endif %}
+ 
 </body>
 </html>
 

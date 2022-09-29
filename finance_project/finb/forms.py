@@ -4,32 +4,26 @@ from django.forms import ModelForm
 from django import forms
 from .models import  *
 from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator
 import re
 
-
-
 class company_mforms(forms.ModelForm):
+    mobile_number=forms.CharField(max_length=15,validators=[RegexValidator('^[6-9][0-9]{9}$','Enter a valid mobile number')])
     class Meta:
-        #password=forms.CharField(widget=forms.PasswordInput)
+        password=forms.CharField(widget=forms.PasswordInput)
         model = company_models
         fields =['name','logo','email','password','re_enter_password', 'mobile_number','company_name','company_address','interest_rate_followed']
-        Widgets={
-            'password': forms.PasswordInput(),
-            're_enter_password': forms.PasswordInput(render_value=True),
+        widgets = {
+            'password':  forms.PasswordInput,
+            're_enter_password': forms.PasswordInput,
         }
-    def clean_mobile_number(self):
-        inputmobile_number = self.cleaned_data['mobile_number']
-        m=re.fullmatch(r'[6-9][0-9]{9}$',  inputmobile_number)
-        if m != None:
-            return inputmobile_number
-        else:
-            raise ValidationError("invalid mobile number")
+        
     def clean(self):
-        total_cleaned_data = super().clean()
-        pwd=total_cleaned_data['password']
-        rpwd=total_cleaned_data['re_enter_password']
+        cleaned_data = super().clean()
+        pwd=cleaned_data.get('password')
+        rpwd=cleaned_data.get('re_enter_password')
         if pwd==rpwd:
-            return total_cleaned_data
+            return cleaned_data
         else:
             raise ValidationError("Incorrect password matching")
 

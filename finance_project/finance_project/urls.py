@@ -20,6 +20,6 @@ from finb.api import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('finb/', include('finb.api.urls')),
+    path('business/', include('finb.api.urls')),
 
 ]

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'phonenumber_field',
     'rest_framework',
+    'rest_framework.authtoken',
     'finb'
 ]
 
@@ -131,3 +132,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #PHONENUMBER_DB_FORMAT="NATIONAL"
 PHONENUMBER_DEFAULT_REGION="IN"
+REST_FRAMEWORK = {
+'DEFAULT_AUTHENTICATION_CLASSES':[
+# 'rest_framework.permissions.IsAuthenticated',
+    'rest_framework.authentication.TokenAuthentication',
+    ]
+}
